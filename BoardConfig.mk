@@ -43,6 +43,14 @@ LOCAL_PATH := device/motorola/falcon
 
 TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
 
+# Vendor Init
+TARGET_UNIFIED_DEVICE := true
+TARGET_INIT_VENDOR_LIB := libinit_msm
+TARGET_LIBINIT_DEFINES_FILE := device/motorola/falcon/init/init_falcon.c
+
+# Custom relese tools for unified devices
+TARGET_RELEASETOOLS_EXTENSIONS := device/motorola/falcon
+
 # Assert
 TARGET_OTA_ASSERT_DEVICE := xt1031,xt1032,xt1033,xt1034,falcon_umts,falcon_umtsds,falcon_cdma,falcon_retuaws,falcon
 
@@ -59,6 +67,9 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
 # Display
 TARGET_USES_C2D_COMPOSITION := true
+
+# GPS
+BOARD_HAVE_NEW_QC_GPS := true
 
 # Wifi related defines
 BOARD_HAS_QCOM_WLAN := true

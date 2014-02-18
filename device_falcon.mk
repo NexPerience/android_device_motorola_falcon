@@ -20,7 +20,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Audio configuration file
 PRODUCT_COPY_FILES += \
-    device/motorola/falcon/mixer_paths.xml:system/etc/mixer_paths.xml
+    $(LOCAL_PATH)/mixer_paths.xml:system/etc/mixer_paths.xml
 
 $(call inherit-product, device/qcom/msm8226/msm8226.mk)
 
@@ -36,6 +36,7 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 # HAL
 PRODUCT_PACKAGES += \
+    gps.msm8226 \
     keystore.qcom \
     lights.MSM8226
 
@@ -47,7 +48,6 @@ PRODUCT_PACKAGES += \
 # Ramdisk
 PRODUCT_PACKAGES += \
     init.mmi.boot.sh \
-    init.mmi.radio.sh \
     init.mmi.rc \
     init.mmi.touch.sh \
     thermal-engine-8226.conf
@@ -57,6 +57,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.target.rc:root/init.target.rc \
     $(LOCAL_PATH)/mount_pds.sh:system/bin/mount_pds.sh \
     $(LOCAL_PATH)/ueventd.qcom.rc:root/ueventd.qcom.rc \
+
+# Gps
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/gps.conf:system/etc/gps.conf
 
 # Wifi
 PRODUCT_COPY_FILES += \
