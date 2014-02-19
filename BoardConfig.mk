@@ -27,11 +27,19 @@
 -include vendor/motorola/falcon/BoardConfigVendor.mk
 
 LOCAL_PATH := device/motorola/falcon
+#kernel
+#ifeq ($(TARGET_PREBUILT_KERNEL),)
+#  LOCAL_KERNEL := device/motorola/falcon/kernel
+#else
+#  LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+#endif
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_KERNEL):kernel
 
 # Vendor Init
 TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_msm
-TARGET_LIBINIT_DEFINES_FILE := device/motorola/falcon/init/init_falcon.c
+#TARGET_LIBINIT_DEFINES_FILE := device/motorola/falcon/init/init_falcon.c
 
 # Custom relese tools for unified devices
 TARGET_RELEASETOOLS_EXTENSIONS := device/motorola/falcon
