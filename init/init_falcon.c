@@ -44,6 +44,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     char device[PROP_VALUE_MAX];
     char devicename[PROP_VALUE_MAX];
     char cdma_variant[92];
+    char fstype[92];
     FILE *fp;
     int rc;
 
@@ -59,7 +60,18 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     fp = popen("/system/bin/ls -la /fsg/falcon_3.img.gz | /system/xbin/cut -d '_' -f3", "r");
     fgets(cdma_variant, sizeof(cdma_variant), fp);
     pclose(fp);
-    if (ISMATCH(radio, "0x1")) {
+    fp = popen("/system/bin/blkid /dev/block/mmcblk0p36 | /system/xbin/cut -d ' ' -f3", "r");
+    fgets(fstype, sizeof(fstype), fp);
+    pclose(fp);
+    if (strstr(fstype, "ext4")) {
+        /* xt1032 GPE */
+        property_set("ro.product.device", "falcon_gpe");
+        property_set("ro.product.model", "Moto G");
+        property_set("ro.build.description", "falcon_gpe-user 4.4.2 KOT49H.M004 5 release-keys");
+        property_set("ro.build.fingerprint", "motorola/falcon_gpe/falcon_umts:4.4.2/KOT49H.M004/5:user/release-keys");
+        property_set("ro.mot.build.customerid", "retusa_glb");
+        property_set("persist.radio.multisim.config", "");
+    } else if (ISMATCH(radio, "0x1")) {
         /* xt1032 */
         property_set("ro.product.device", "falcon_umts");
         property_set("ro.product.model", "Moto G");
@@ -87,8 +99,8 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
 			/* xt1031 */
             property_set("ro.product.device", "falcon_cdma");
             property_set("ro.product.model", "Moto G");
-            property_set("ro.build.description", "falcon_sprint-user 4.3 14.10.0Q3.X-84-14 16 release-keys");
-            property_set("ro.build.fingerprint", "motorola/falcon_sprint/falcon_cdma:4.3/14.10.0Q3.X-84-14/16:user/release-keys");
+            property_set("ro.build.description", "falcon_boost-user 4.4.2 KXB20.9-1.10-1.18 18 release-keys");
+            property_set("ro.build.fingerprint", "motorola/falcon_boost/falcon_cdma:4.4.2/KXB20.9-1.10-1.18/18:user/release-keys");
             property_set("persist.radio.multisim.config", "");
             property_set("ro.mot.build.customerid", "sprint");
         }
@@ -122,5 +134,5 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     }
     property_get("ro.product.device", device);
     strlcpy(devicename, device, sizeof(devicename));
-    ERROR("Found radio id %s setting build properties for %s device\n", radio, devicename);
+    ERROR("Found radio id: %s data %s setting build properties for %s device\n", radio, fstype, devicename);
 }
